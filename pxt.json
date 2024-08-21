@@ -12,7 +12,8 @@
         "Color Fading": "github:jwunderl/pxt-color#v0.2.2",
         "arcade-fancy-text": "github:riknoll/arcade-fancy-text#v0.1.1",
         "arcade-mini-menu": "github:riknoll/arcade-mini-menu#v0.0.1",
-        "arcade-block-objects": "github:microsoft/arcade-block-objects#f486ac1d4dcc096b9297174f97f8cdef1576c7ff"
+        "arcade-block-objects": "github:microsoft/arcade-block-objects#f486ac1d4dcc096b9297174f97f8cdef1576c7ff",
+        "extra-effect": "github:AlexSzeto/extra-effects#v3.1.0"
     },
     "files": [
         "main.blocks",
