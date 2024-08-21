@@ -4,7 +4,7 @@
 > Open this page at [https://phatistic.github.io/kadelane/](https://phatistic.github.io/kadelane/)
 
 # KadeLaneRule
-# ChooseTheLanguages
+## ChooseTheLanguages
 [English](#English)
 [Thai](#Thai)
 
