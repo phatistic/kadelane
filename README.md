@@ -92,7 +92,7 @@ The player with the lowest roll will play last.
 ## References
 [Play Paper Games - BossKerati](https://m.youtube.com/watch?v=B2nDdmw3ZHs&t=209s&pp=ygUm4LmA4LiB4Lih4LiB4Lij4Liw4LiU4Liy4LipIGJvc3NrZXJhdGk%3D)
 [Create Paper Games as Mobile Games - Techcast](https://m.youtube.com/watch?v=pjJtvuPbcxk&pp=ygVI4LmA4LiB4Lih4LiB4Lij4Liw4LiU4Liy4Lip4Liq4Li54LmI4LmA4LiB4Lih4Lih4Li34Lit4LiW4Li34LitIHRlY2hjYXN0)
-
+[Back](#ChooseTheLanguages)
 # Thai
 ## กฏและกติกาในการเล่นเกมเกตเรน
 ### 1. **การเตรียมตัวก่อนเล่น**
@@ -163,3 +163,4 @@ The player with the lowest roll will play last.
 [เล่นเกมในกระดาษ - BossKerati](https://m.youtube.com/watch?v=B2nDdmw3ZHs&t=209s&pp=ygUm4LmA4LiB4Lih4LiB4Lij4Liw4LiU4Liy4LipIGJvc3NrZXJhdGk%3D)
 [สร้างเกมกระดาษให้เป็นเกมมือถือ - Techcast](https://m.youtube.com/watch?v=pjJtvuPbcxk&pp=ygVI4LmA4LiB4Lih4LiB4Lij4Liw4LiU4Liy4Lip4Liq4Li54LmI4LmA4LiB4Lih4Lih4Li34Lit4LiW4Li34LitIHRlY2hjYXN0)
 
+[ย้อนกลับ](#ChooseTheLanguages)
