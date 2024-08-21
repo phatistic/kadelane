@@ -106,6 +106,21 @@ function Get_Player_upgraded () {
     }
     sprites.destroy(Item_sprite, effects.disintegrate, 500)
 }
+function GetMovePaticalAtSprite (Player: Sprite, dx: number, dy: number, Velocity: number, Delay: number) {
+    timer.background(function () {
+        PlayerPatical = extraEffects.createCustomSpreadEffectData(
+        [ColorList[sprites.readDataNumber(Player, "P#")], 1],
+        false,
+        extraEffects.createShrinkingSizeTable(3),
+        extraEffects.createPercentageRange(4, 8),
+        extraEffects.createPercentageRange(6, 12),
+        extraEffects.createTimeRange(Math.floor(Delay / 2), Delay)
+        )
+        PlayerPatical.extraVX = dx * Velocity
+        PlayerPatical.extraVY = dy * Velocity
+        extraEffects.createSpreadEffectOnAnchor(Player, PlayerPatical, Delay * 2.2, 48, 20)
+    })
+}
 function NextTrun () {
     Trun = (Trun + 1) % Max_player
     My_player = New_trun(Trun, true)
@@ -435,7 +450,7 @@ function Get_player_acttacked (Dir: number, Touching: boolean, Damage: number, P
         Player.vx = MovePin[0][Dir - 1] * Math.sqrt(2 * (My_player.fx * 8))
         Player.vy = MovePin[1][Dir - 1] * Math.sqrt(2 * (My_player.fx * 8))
         if (Effect) {
-            CreateEffectAtSprite(Player, 0 - MovePin[0][Dir - 1], 0 - MovePin[1][Dir - 1], 80, 500)
+            GetMovePaticalAtSprite(Player, 0 - MovePin[0][Dir - 1], 0 - MovePin[1][Dir - 1], 80, 500)
         }
         extraEffects.createSpreadEffectOnAnchor(Player, extraEffects.createSingleColorSpreadEffectData(ColorList[sprites.readDataNumber(Player, "P#")], ExtraEffectPresetShape.Spark), 500, 48)
         sprites.changeDataNumberBy(Player, "H", 0 - Damage)
@@ -457,7 +472,7 @@ function Walk_in_direction (Dir: number, Walk: boolean, Effect: boolean) {
         My_player.vx = MovePin[0][Dir - 1] * Math.sqrt(2 * (My_player.fx * 8))
         My_player.vy = MovePin[1][Dir - 1] * Math.sqrt(2 * (My_player.fx * 8))
         if (Effect) {
-            CreateEffectAtSprite(My_player, 0 - MovePin[0][Dir - 1], 0 - MovePin[1][Dir - 1], 80, 500)
+            GetMovePaticalAtSprite(My_player, 0 - MovePin[0][Dir - 1], 0 - MovePin[1][Dir - 1], 80, 500)
         }
         sprites.changeDataNumberBy(My_player, "E", -1)
     }
@@ -970,24 +985,6 @@ function GotPlayerSetup () {
     Player_location = My_player.tilemapLocation()
     DragPlayer = true
 }
-function CreateEffectAtSprite (Player: Sprite, dx: number, dy: number, Velocity: number, Delay: number) {
-    if (!(PlayerPatical)) {
-        PlayerPatical = extraEffects.createCustomSpreadEffectData(
-        [ColorList[sprites.readDataNumber(My_player, "P#")], 1],
-        false,
-        extraEffects.createShrinkingSizeTable(3),
-        extraEffects.createPercentageRange(4, 8),
-        extraEffects.createPercentageRange(6, 12),
-        extraEffects.createTimeRange(Math.floor(Delay / 2), Delay)
-        )
-        PlayerPatical.extraVX = dx * Velocity
-        PlayerPatical.extraVY = dy * Velocity
-        extraEffects.createSpreadEffectOnAnchor(Player, PlayerPatical, Delay)
-        timer.after(Delay, function () {
-            PlayerPatical = spriteutils.nullConsts(spriteutils.NullConsts.Undefined)
-        })
-    }
-}
 function Get_overlaps (Player: Sprite) {
     for (let value of sprites.allOfKind(SpriteKind.Player)) {
         if (Player.overlapsWith(value)) {
@@ -1308,7 +1305,6 @@ let PlayerImage: Image[][] = []
 let TileMapFrame = 0
 let Tile_gen = 0
 let I = 0
-let PlayerPatical: SpreadEffectData = null
 let TextStateSprite: fancyText.TextSprite = null
 let index = 0
 let Img: Image = null
@@ -1348,6 +1344,7 @@ let Pidx = 0
 let Player_location: tiles.Location = null
 let DragPlayer = false
 let Trun = 0
+let PlayerPatical: SpreadEffectData = null
 let ColorList: number[] = []
 let TileMapGridList: number[] = []
 let Action = false
