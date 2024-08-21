@@ -3,6 +3,11 @@
 
 > Open this page at [https://phatistic.github.io/kadelane/](https://phatistic.github.io/kadelane/)
 
+# KadeLaneRule
+# ChooseTheLanguages
+[English](#English)
+[Thai](#Thai)
+
 ## Use as Extension
 
 This repository can be added as an **extension** in MakeCode.
@@ -32,9 +37,6 @@ This image may take a few minutes to refresh.
 * for PXT/arcade
 <script src="https://makecode.com/gh-pages-embed.js"></script><script>makeCodeRender("{{ site.makecode.home_url }}", "{{ site.github.owner_name }}/{{ site.github.repository_name }}");</script>
 
-# Choose The Languages
-[English](#English)
-[Thai](#Thai)
 
 # English
 ## Rules and Regulations for Playing KadeLane
