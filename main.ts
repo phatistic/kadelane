@@ -74,7 +74,7 @@ function PlayersrpiteTick () {
     }
     if (Playersprite) {
         if (!(Action)) {
-            Get_player_acttacked(sprites.readDataNumber(My_player, "Dir"), true, sprites.readDataNumber(My_player, "A"), Playersprite)
+            Get_player_acttacked(sprites.readDataNumber(My_player, "Dir"), true, sprites.readDataNumber(My_player, "A"), Playersprite, true)
             PlaySoundEffect(2)
             scene.cameraShake(4, 500)
             Action = true
@@ -85,6 +85,7 @@ function PlayersrpiteTick () {
             }
             tiles.placeOnTile(Playersprite, Playersprite.tilemapLocation())
             if (sprites.readDataNumber(Playersprite, "H") <= 0 || TileMapGridList[GetTiledAt(Playersprite.tilemapLocation().column, Playersprite.tilemapLocation().row)] < 0) {
+                extraEffects.createSpreadEffectOnAnchor(Playersprite, extraEffects.createSingleColorSpreadEffectData(ColorList[sprites.readDataNumber(Playersprite, "P#")], ExtraEffectPresetShape.Spark), 1000, 48, 20)
                 sprites.destroy(Playersprite, effects.fire, 500)
                 sprites.destroy(sprites.readDataSprite(Playersprite, "Hitbox"))
                 Get_re_player_ID()
@@ -335,14 +336,14 @@ function GetMovement (Dir: number, UTrun: number) {
         if (sprites.readDataNumber(My_player, "Dir") != UTrun) {
             sprites.setDataNumber(My_player, "Dir", Dir)
             if (Can_i_move_here(My_player)) {
-                Walk_in_direction(sprites.readDataNumber(My_player, "Dir"), true)
+                Walk_in_direction(sprites.readDataNumber(My_player, "Dir"), true, true)
                 My_player.sayText(convertToText(sprites.readDataNumber(My_player, "E")), 500, false)
                 PlaySoundEffect(0)
             }
         } else {
             if (Can_i_Utrun_here(My_player)) {
                 sprites.setDataNumber(My_player, "Dir", Dir)
-                Walk_in_direction(sprites.readDataNumber(My_player, "Dir"), false)
+                Walk_in_direction(sprites.readDataNumber(My_player, "Dir"), false, true)
                 PlaySoundEffect(4)
             }
         }
@@ -369,6 +370,8 @@ sprites.onDestroyed(SpriteKind.Player, function (sprite) {
                 Trun = sprites.allOfKind(SpriteKind.Player).length - 1
                 My_player = Get_player_on_trun(Trun)
                 LeaderBoardCapture(My_player, true, 1)
+            } else {
+            	
             }
             timer.after(50, function () {
                 LeaderBoardCapture(sprite, PlayerKilledList.indexOf(sprites.readDataNumber(sprite, "P#")) >= 0, 1)
@@ -425,21 +428,16 @@ function Get_item_on_tile (Col: number, Row: number) {
     }
     return spriteutils.nullConsts(spriteutils.NullConsts.Undefined)
 }
-function Get_player_acttacked (Dir: number, Touching: boolean, Damage: number, Player: Sprite) {
+function Get_player_acttacked (Dir: number, Touching: boolean, Damage: number, Player: Sprite, Effect: boolean) {
     if (Get_touching_on(My_player)) {
-        if (Dir == 1) {
-            Player.fx = 30
-            Player.vx = Math.sqrt(2 * (Playersprite.fx * 8))
-        } else if (Dir == 2) {
-            Player.fy = 30
-            Player.vy = Math.sqrt(2 * (Playersprite.fy * 8))
-        } else if (Dir == 3) {
-            Player.fx = 30
-            Player.vx = 0 - Math.sqrt(2 * (Playersprite.fx * 8))
-        } else {
-            Player.fy = 30
-            Player.vy = 0 - Math.sqrt(2 * (Playersprite.fy * 8))
+        Player.fx = 30
+        Player.fy = 30
+        Player.vx = MovePin[0][Dir - 1] * Math.sqrt(2 * (My_player.fx * 8))
+        Player.vy = MovePin[1][Dir - 1] * Math.sqrt(2 * (My_player.fx * 8))
+        if (Effect) {
+            CreateEffectAtSprite(Player, 0 - MovePin[0][Dir - 1], 0 - MovePin[1][Dir - 1], 80, 500)
         }
+        extraEffects.createSpreadEffectOnAnchor(Player, extraEffects.createSingleColorSpreadEffectData(ColorList[sprites.readDataNumber(Player, "P#")], ExtraEffectPresetShape.Spark), 500, 48)
         sprites.changeDataNumberBy(Player, "H", 0 - Damage)
     }
 }
@@ -450,22 +448,16 @@ function TimeToFixTile (Idx: number) {
     FixTileAt(Idx - 1)
     FixTileAt(Idx - MapCol)
 }
-function Walk_in_direction (Dir: number, Walk: boolean) {
+function Walk_in_direction (Dir: number, Walk: boolean, Effect: boolean) {
     if (!(Walk)) {
         sprites.setDataNumber(My_player, "E", 0)
     } else {
-        if (Dir == 1) {
-            My_player.fx = 30
-            My_player.vx = Math.sqrt(2 * (My_player.fx * 8))
-        } else if (Dir == 2) {
-            My_player.fy = 30
-            My_player.vy = Math.sqrt(2 * (My_player.fy * 8))
-        } else if (Dir == 3) {
-            My_player.fx = 30
-            My_player.vx = 0 - Math.sqrt(2 * (My_player.fx * 8))
-        } else {
-            My_player.fy = 30
-            My_player.vy = 0 - Math.sqrt(2 * (My_player.fy * 8))
+        My_player.fx = 30
+        My_player.fy = 30
+        My_player.vx = MovePin[0][Dir - 1] * Math.sqrt(2 * (My_player.fx * 8))
+        My_player.vy = MovePin[1][Dir - 1] * Math.sqrt(2 * (My_player.fx * 8))
+        if (Effect) {
+            CreateEffectAtSprite(My_player, 0 - MovePin[0][Dir - 1], 0 - MovePin[1][Dir - 1], 80, 500)
         }
         sprites.changeDataNumberBy(My_player, "E", -1)
     }
@@ -473,7 +465,7 @@ function Walk_in_direction (Dir: number, Walk: boolean) {
 function RenderTile () {
     for (let index = 0; index <= MapCol * MapRow - 1; index++) {
         if (TileMapGridList[index] < 0) {
-            tiles.setTileAt(tiles.getTileLocation(OffCol + index % 1, OffRow + Math.floor(index / MapCol)), TileHole[Math.abs(TileMapGridList[index]) - 1])
+            tiles.setTileAt(tiles.getTileLocation(OffCol + index % MapCol, OffRow + Math.floor(index / MapCol)), TileHole[Math.abs(TileMapGridList[index]) - 1])
         } else {
             TimeToFixTile(index)
             tiles.setTileAt(tiles.getTileLocation(OffCol + index % MapCol, OffRow + Math.floor(index / MapCol)), Map_asset[TileMapGridList[index]])
@@ -624,12 +616,17 @@ function BeginSetup () {
     4,
     6
     ]
-    MovePin = [
-    [1, 0],
-    [0, 1],
-    [-1, 0],
-    [0, 1]
-    ]
+    MovePin = [[
+    1,
+    0,
+    -1,
+    0
+    ], [
+    0,
+    1,
+    0,
+    -1
+    ]]
     ColorFrameList = [
     img`
         . 2 2 2 2 . 
@@ -783,6 +780,7 @@ function RenderStatus (Width: number, SliceHight: number, HighlightControl: bool
             if (Start) {
                 if (TextStateSprite) {
                     sprites.destroy(TextStateSprite)
+                    TextStateSprite = spriteutils.nullConsts(spriteutils.NullConsts.Undefined)
                 }
             }
             if (My_player) {
@@ -859,41 +857,39 @@ function RenderStatus (Width: number, SliceHight: number, HighlightControl: bool
                                         ..............................
                                         `, 4)[index], Img, 0, scene.screenHeight() - 35)
                                 }
-                            } else {
-                                if (TileMapGridList[GetTiledAt(My_player.tilemapLocation().column + MovePin[index][0], My_player.tilemapLocation().row + MovePin[index][1])] >= 0) {
-                                    spriteutils.drawTransparentImage(scaling.createRotations(img`
-                                        ..............................
-                                        ..............................
-                                        ..............................
-                                        ............111111............
-                                        ...........1......1...........
-                                        ...........1......1...........
-                                        ...........1......1...........
-                                        ...........1......1...........
-                                        ...........1......1...........
-                                        ...........1......1...........
-                                        ...........1......1...........
-                                        ....1111111........1111111....
-                                        ...1......................1...
-                                        ...1..................11..1...
-                                        ...1.................1111.1...
-                                        ...1.................1111.1...
-                                        ...1..................11..1...
-                                        ...1......................1...
-                                        ....1111111........1111111....
-                                        ...........1......1...........
-                                        ...........1......1...........
-                                        ...........1......1...........
-                                        ...........1......1...........
-                                        ...........1......1...........
-                                        ...........1......1...........
-                                        ...........1......1...........
-                                        ............111111............
-                                        ..............................
-                                        ..............................
-                                        ..............................
-                                        `, 4)[index], Img, 0, scene.screenHeight() - 35)
-                                }
+                            } else if (tiles.readDataNumber(tiles.getTileLocation(My_player.tilemapLocation().column + MovePin[0][index], My_player.tilemapLocation().row + MovePin[1][index]), "Tdata") >= 0) {
+                                spriteutils.drawTransparentImage(scaling.createRotations(img`
+                                    ..............................
+                                    ..............................
+                                    ..............................
+                                    ............111111............
+                                    ...........1......1...........
+                                    ...........1......1...........
+                                    ...........1......1...........
+                                    ...........1......1...........
+                                    ...........1......1...........
+                                    ...........1......1...........
+                                    ...........1......1...........
+                                    ....1111111........1111111....
+                                    ...1......................1...
+                                    ...1..................11..1...
+                                    ...1.................1111.1...
+                                    ...1.................1111.1...
+                                    ...1..................11..1...
+                                    ...1......................1...
+                                    ....1111111........1111111....
+                                    ...........1......1...........
+                                    ...........1......1...........
+                                    ...........1......1...........
+                                    ...........1......1...........
+                                    ...........1......1...........
+                                    ...........1......1...........
+                                    ...........1......1...........
+                                    ............111111............
+                                    ..............................
+                                    ..............................
+                                    ..............................
+                                    `, 4)[index], Img, 0, scene.screenHeight() - 35)
                             }
                         }
                     }
@@ -973,6 +969,24 @@ function GotPlayerSetup () {
     My_player.setFlag(SpriteFlag.Invisible, false)
     Player_location = My_player.tilemapLocation()
     DragPlayer = true
+}
+function CreateEffectAtSprite (Player: Sprite, dx: number, dy: number, Velocity: number, Delay: number) {
+    if (!(PlayerPatical)) {
+        PlayerPatical = extraEffects.createCustomSpreadEffectData(
+        [ColorList[sprites.readDataNumber(My_player, "P#")], 1],
+        false,
+        extraEffects.createShrinkingSizeTable(3),
+        extraEffects.createPercentageRange(4, 8),
+        extraEffects.createPercentageRange(6, 12),
+        extraEffects.createTimeRange(Math.floor(Delay / 2), Delay)
+        )
+        PlayerPatical.extraVX = dx * Velocity
+        PlayerPatical.extraVY = dy * Velocity
+        extraEffects.createSpreadEffectOnAnchor(Player, PlayerPatical, Delay)
+        timer.after(Delay, function () {
+            PlayerPatical = spriteutils.nullConsts(spriteutils.NullConsts.Undefined)
+        })
+    }
 }
 function Get_overlaps (Player: Sprite) {
     for (let value of sprites.allOfKind(SpriteKind.Player)) {
@@ -1181,6 +1195,12 @@ function PlacePlayer () {
 function Ground_setup () {
     Setup_asset()
     for (let value3 of tiles.getTilesByType(assets.tile`myTile`)) {
+        tiles.setDataNumber(value3, "Tdata", -1)
+    }
+    for (let value3 of tiles.getTilesByType(assets.tile`myTile0`)) {
+        tiles.setDataNumber(value3, "Tdata", 1)
+    }
+    for (let value3 of tiles.getTilesByType(assets.tile`myTile`)) {
         if (tiles.tileAtLocationEquals(value3.getNeighboringLocation(CollisionDirection.Top), assets.tile`myTile0`)) {
             tiles.setTileAt(value3, assets.tile`myTile49`)
         }
@@ -1203,7 +1223,7 @@ function Ground_setup () {
         TileMapGridList.push(-1)
     }
     for (let J = 0; J <= MapCol - 1; J++) {
-        if (tiles.tileAtLocationEquals(tiles.getTileLocation(OffCol + 1 + J, OffRow + (MapRow - 1)), assets.tile`myTile49`)) {
+        if (tiles.tileAtLocationEquals(tiles.getTileLocation(OffCol + J, OffRow + (MapRow - 1)), assets.tile`myTile49`)) {
             TileMapGridList.push(-2)
         } else {
             TileMapGridList.push(-1)
@@ -1288,12 +1308,12 @@ let PlayerImage: Image[][] = []
 let TileMapFrame = 0
 let Tile_gen = 0
 let I = 0
+let PlayerPatical: SpreadEffectData = null
 let TextStateSprite: fancyText.TextSprite = null
 let index = 0
 let Img: Image = null
 let MenuSelect: miniMenu.MenuSprite = null
 let ColorFrameList: Image[] = []
-let MovePin: number[][] = []
 let PlayerIconList: Image[] = []
 let LeaderBoardRankList: string[] = []
 let SoundList: music.SoundEffect[] = []
@@ -1301,6 +1321,7 @@ let OffRow = 0
 let OffCol = 0
 let TileHole: Image[] = []
 let MapRow = 0
+let MovePin: number[][] = []
 let EdgeTile = 0
 let Max_energy = 0
 let WinIntro = false
@@ -1317,7 +1338,6 @@ let MapGroup: number[] = []
 let MapRecipe: string[] = []
 let Map_asset: Image[] = []
 let TextNameSprite: fancyText.TextSprite = null
-let ColorList: number[] = []
 let Colour = 0
 let Str = ""
 let MenuSprite: miniMenu.MenuSprite = null
@@ -1328,6 +1348,7 @@ let Pidx = 0
 let Player_location: tiles.Location = null
 let DragPlayer = false
 let Trun = 0
+let ColorList: number[] = []
 let TileMapGridList: number[] = []
 let Action = false
 let My_player: Sprite = null
@@ -1360,6 +1381,7 @@ game.onUpdate(function () {
         if (StartSetup == Start) {
             if (TextNameSprite) {
                 sprites.destroy(TextNameSprite)
+                TextNameSprite = spriteutils.nullConsts(spriteutils.NullConsts.Undefined)
             }
         }
         if (TextNameSprite) {
