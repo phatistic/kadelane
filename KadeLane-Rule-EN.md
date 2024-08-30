@@ -1,4 +1,5 @@
-﻿# Rules and Regulations for Playing KadeLane
+> [Back](README.md)
+# Rules and Regulations for Playing KadeLane
 ## 1. **Preparation Before Playing**
 - Before starting the game, check how many players will be playing. Typically, the game can be played with **2-4** players. After you’re ready, you need to **create a field** of size **6×10** squares, with the edge of the field consisting of pits divided as follows:
 
