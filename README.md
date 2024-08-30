@@ -5,8 +5,8 @@
 
 # KadeLaneRule
 ## ChooseTheLanguages
-[English](#English)
-[Thai](#Thai)
+- [English](KadelaneRule-EN.md)
+- [Thai](KadelaneRule-TH.md)
 
 ## Use as Extension
 
