@@ -712,29 +712,32 @@ function SelectTostart () {
         miniMenu.createMenuItem("2Players", assets.image`myImage3`),
         miniMenu.createMenuItem("3Players", assets.image`myImage4`),
         miniMenu.createMenuItem("4Players", assets.image`myImage5`)
-        ], "DoYouHavePlayers?", [
-        130,
-        76,
+        ], "HowManyPlayers?", [
+        122,
+        78,
         80,
         60,
         15
         ], [2, 3, 4], img`
-            . 1 1 1 1 1 1 1 1 1 1 1 1 1 . 
-            1 1 f f f f f f f f f f f 1 1 
-            1 f f f f f f f f f f f f f 1 
-            1 f f f 1 1 1 1 1 1 1 f f f 1 
-            1 f f 1 1 f f f f f 1 1 f f 1 
-            1 f f 1 f 1 1 1 1 1 f 1 f f 1 
-            1 f f 1 f 1 1 1 1 1 f 1 f f 1 
-            1 f f 1 f 1 1 1 1 1 f 1 f f 1 
-            1 f f 1 f 1 1 1 1 1 f 1 f f 1 
-            1 f f 1 f 1 1 1 1 1 f 1 f f 1 
-            1 f f 1 1 f f f f f 1 1 f f 1 
-            1 f f f 1 1 1 1 1 1 1 f f f 1 
-            1 f f f f f f f f f f f f f 1 
-            1 1 f f f f f f f f f f f 1 1 
-            . 1 1 1 1 1 1 1 1 1 1 1 1 1 . 
-            `)
+            ..................
+            ...111111111111...
+            ..13377337733559..
+            .132277227722776c.
+            .132a66aa66aa676c.
+            .198bccccccc9d4ec.
+            .198bcffffff1d4ec.
+            .132acffffff1576c.
+            .132acffffff1576c.
+            .198bcffffff1d4ec.
+            .198bcffffff1d4ec.
+            .132acffffff1576c.
+            .132a91111111576c.
+            .198bdd99dd99d4ec.
+            .19884488448844ec.
+            ..cbbeebbeebbeec..
+            ...cccccccccccc...
+            ..................
+        `)
         blockObject.storeOnSprite(blockObject.getStoredObject(MenuSprite), MenuSelect)
         OpenMenu = true
         MenuSelect.onButtonPressed(controller.A, function (selection, selectedIndex) {
