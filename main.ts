@@ -721,20 +721,20 @@ function SelectTostart () {
         ], [2, 3, 4], img`
             ..................
             ...111111111111...
-            ..13377337733559..
-            .132277227722776c.
-            .132a66aa66aa676c.
-            .198bccccccc9d4ec.
+            ..13335553335559..
+            .132227772227776c.
+            .132aa666aaa6676c.
+            .132accccccc9576c.
+            .198bcffffff1d4ec.
+            .198bcffffff1d4ec.
             .198bcffffff1d4ec.
             .132acffffff1576c.
             .132acffffff1576c.
-            .198bcffffff1d4ec.
-            .198bcffffff1d4ec.
             .132acffffff1576c.
-            .132a91111111576c.
-            .198bdd99dd99d4ec.
-            .19884488448844ec.
-            ..cbbeebbeebbeec..
+            .198b91111111d4ec.
+            .198b9ddd999dd4ec.
+            .19888444888444ec.
+            ..cbbbeeebbbeeec..
             ...cccccccccccc...
             ..................
         `)
